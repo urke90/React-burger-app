@@ -4,11 +4,18 @@ import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
 const burger = ({ ingredients }) => {
-  const transformedIngredients = Object.keys(ingredients).map((ing) => {
-    return [...Array(ingredients[ing]).fill(ing)].map((_, i) => (
-      <BurgerIngredient key={ing + i} type={ing} />
-    ));
-  });
+  let transformedIngredients = Object.keys(ingredients)
+    .map((ing) => {
+      return [...Array(ingredients[ing]).fill(ing)].map((_, i) => (
+        <BurgerIngredient key={ing + i} type={ing} />
+      ));
+    })
+    .reduce((acc, el) => acc.concat(el), []);
+  console.log("transformedIngredients", transformedIngredients);
+
+  if (transformedIngredients.length === 0) {
+    transformedIngredients = <p>Please add ingredients!!!</p>;
+  }
 
   // const transformedIngredients = Object.keys(ingredients).map((ing) => {
   //   return [...Array(ingredients[ing])].map((_, i) => (
