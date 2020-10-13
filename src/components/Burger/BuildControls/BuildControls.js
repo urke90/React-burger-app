@@ -16,6 +16,7 @@ const buildControls = ({
   disabledBtn,
   price,
   purchasable,
+  purchaseHandler,
 }) => (
   <div className={classes.BuildControls}>
     <p>
@@ -32,7 +33,11 @@ const buildControls = ({
         />
       );
     })}
-    <button disabled={!purchasable} className={classes.OrderButton}>
+    <button
+      onClick={purchaseHandler}
+      disabled={!purchasable}
+      className={classes.OrderButton}
+    >
       Order Now!
     </button>
   </div>
