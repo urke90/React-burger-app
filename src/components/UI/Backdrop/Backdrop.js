@@ -6,4 +6,5 @@ const backdrop = ({ showModal, closeModalHandler }) =>
   showModal ? (
     <div onClick={closeModalHandler} className={classes.Backdrop}></div>
   ) : null;
+
 export default backdrop;
