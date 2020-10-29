@@ -32,7 +32,7 @@ class BurgerBuilder extends Component {
   cancelPurchaseHandler = () => this.setState({ isPurchased: false });
 
   purchaseContinueHandler = () => {
-    this.props.history.push("/checkout");
+    console.log("this.props.history", this.props.history);
     // this.setState({ spinnerLoading: true });
     // const order = {
     //   ingredients: this.state.ingredients,
@@ -58,6 +58,18 @@ class BurgerBuilder extends Component {
     //   .catch((error) =>
     //     this.setState({ spinnerLoading: false, isPurchased: false })
     //   );
+    let queryString = [];
+    const ingredients = this.state.ingredients;
+    for (let ing in ingredients) {
+      queryString.push(
+        `${encodeURIComponent(ing)}=${decodeURIComponent(ingredients[ing])}`
+      );
+    }
+    queryString = queryString.join("&");
+    this.props.history.push({
+      pathname: "/checkout",
+      search: `?${queryString}`,
+    });
   };
 
   updatePurchaseState = (ingredients) => {
