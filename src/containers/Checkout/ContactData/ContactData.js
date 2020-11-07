@@ -16,7 +16,7 @@ class ContactData extends Component {
     spinnerLoading: false,
   };
 
-  orderSubmitHandler = (evt) => {
+  orderSubmitHandler = async (evt) => {
     evt.preventDefault();
     const { price, ingredients, history } = this.props;
     this.setState({ spinnerLoading: true });
@@ -35,14 +35,16 @@ class ContactData extends Component {
       deliveryMethod: "fastest",
       error: false,
     };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ spinnerLoading: false });
-        console.log("order submited successfully", response);
-        history.push("/");
-      })
-      .catch((error) => console.log("error posting order", error));
+
+    try {
+      const response = await axios.post("/orders.json", order);
+      console.log("response", response.data);
+      this.setState({ spinnerLoading: false });
+      history.push("/");
+    } catch (error) {
+      this.setState({ spinnerLoading: false });
+      console.log("error posting order", error);
+    }
   };
 
   render() {
