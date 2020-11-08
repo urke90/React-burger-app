@@ -5,60 +5,17 @@ import classes from "./ContactData.module.css";
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
+import { orderFormData } from "../../../helpers/helpers";
 
 class ContactData extends Component {
   state = {
     orderForm: {
-      name: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Your name",
-        },
-        value: "",
-      },
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "email",
-          placeholder: "Your e-mail",
-        },
-        value: "",
-      },
-      street: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Street",
-        },
-        value: "",
-      },
-      postalCode: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "ZIP code",
-        },
-        value: "",
-      },
-      country: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Country",
-        },
-        value: "",
-      },
-      deliveryMethod: {
-        elementType: "select",
-        elementConfig: {
-          options: [
-            { value: "fastest", displayValue: "Fastest" },
-            { value: "cheapest", displayValue: "Cheapest" },
-          ],
-        },
-        value: "",
-      },
+      name: orderFormData("input", "text", "Your Name", "", false),
+      email: orderFormData("input", "email", "Your Email", "", false),
+      street: orderFormData("input", "text", "Street", "", false),
+      postalCode: orderFormData("input", "text", "ZIP code", "", false),
+      country: orderFormData("input", "text", "Country", "", false),
+      deliveryMethod: orderFormData("select", "", "", "fastest", true),
     },
     spinnerLoading: false,
   };
@@ -84,17 +41,12 @@ class ContactData extends Component {
     for (let indentifier in orderForm) {
       customerData[indentifier] = orderForm[indentifier].value;
     }
-
-    console.log("price", price);
-    console.log("ingredients", ingredients);
-
     const order = {
       ingredients,
       price,
       customerData,
     };
 
-    console.log("order", order);
     try {
       this.setState({ spinnerLoading: true });
       const response = await axios.post("/orders.json", order);
@@ -137,7 +89,7 @@ class ContactData extends Component {
     );
 
     if (spinnerLoading) form = <Spinner />;
-    console.log("this.state", this.state);
+    console.log("this.state CONTACT DATA", this.state);
     return (
       <div className={classes.ContactData}>
         <h4>Please enter your data</h4>
