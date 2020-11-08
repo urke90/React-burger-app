@@ -78,24 +78,25 @@ class ContactData extends Component {
   orderSubmitHandler = async (evt) => {
     evt.preventDefault();
     const { price, ingredients, history } = this.props;
-    this.setState({ spinnerLoading: true });
+    const { orderForm } = this.state;
+    const customerData = {};
+
+    for (let indentifier in orderForm) {
+      customerData[indentifier] = orderForm[indentifier].value;
+    }
+
+    console.log("price", price);
+    console.log("ingredients", ingredients);
+
     const order = {
       ingredients,
       price,
-      customer: {
-        name: "uros bijelic",
-        address: {
-          street: "random street",
-          zipCode: "11000",
-          country: "Serbia",
-        },
-        email: "test@test.com",
-      },
-      deliveryMethod: "fastest",
-      error: false,
+      customerData,
     };
 
+    console.log("order", order);
     try {
+      this.setState({ spinnerLoading: true });
       const response = await axios.post("/orders.json", order);
       console.log("response", response.data);
       this.setState({ spinnerLoading: false });
@@ -118,7 +119,7 @@ class ContactData extends Component {
     }
 
     let form = (
-      <form>
+      <form onSubmit={this.orderSubmitHandler}>
         {formElements.map((el) => {
           const { elementType, elementConfig, value } = el.config;
           return (
@@ -131,9 +132,7 @@ class ContactData extends Component {
             />
           );
         })}
-        <Button clicked={this.orderSubmitHandler} btnType="Success">
-          Order
-        </Button>
+        <Button btnType="Success">Order</Button>
       </form>
     );
 
